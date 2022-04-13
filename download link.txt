@@ -1,0 +1,3 @@
+wget https://raw.githubusercontent.com/deanralph/serverSetup/main/main.py
+wget https://raw.githubusercontent.com/deanralph/serverSetup/main/colouredText.py
+wget https://raw.githubusercontent.com/deanralph/serverSetup/main/installList.txt

@@ -1,0 +1,5 @@
+qemu-guest-agent
+openssh-server
+htop
+nano
+snmpd

@@ -6,70 +6,121 @@
 
 import os
 from colouredText import *
-import time
 import subprocess
-import re
+import telnetlib
+import socket
+import getpass
 
 # Global Varables
 
 # Functions
 
 def checkRoot():
-    # return os.geteuid() == 0
-    return True
+    return os.geteuid() == 0
+
 
 def javaCheck():
     version = subprocess.check_output(['java', '-version'], stderr=subprocess.STDOUT)
-    if "Oracle" in str(version):
-        printOKGreen("Java Installed")
+    if "Runtime" in str(version):
+        printOKGreen("Java already installed")
         return False
     else:
         printWarning("No Java install detected")
         return True
 
-def installJava():
-    print("""Please select one of the following Java versions to install:
-    
-    1: Oracle v8
-    2: Oracle v11
-    3: Open Java v8
-    4: Open Java v11
-    5: None
-    
-Please enter choice 1-5 - """)
 
-def installOpenSSH():
-    print("Installing OpenSSH Server")
-    printOKGreen("Install Successful")
+def installJava():
+    installJDK = input("Do you need java on this box? y/n: ")
+    if installJava == "y":
+        os.system('sudo apt install default-jdk')
+
 
 def SetSUDONoPassword():
+
     varPresent = False
-    print("Check if user has Sudo no password permissions")
-    with open("test.txt", 'r') as f:
+    print("Checking if user has SUDO no password permissions")
+
+    with open("/etc/sudoers", 'r') as f:
         lines = f.read()
-        if "test" in lines:
+        if "dean ALL=(ALL) " in lines:
             varPresent = True
+
     if varPresent:
         printOKGreen("User aleady has permissions")
     else:
         printWarning("Adding user to sudoers")
-        with open("test.txt", 'a') as f:
+        with open("/etc/sudoers", 'a') as f:
             f.write("\n")
-            f.write("test")
+            f.write("dean ALL=(ALL) NOPASSWD: ALL")
+        with open("/etc/sudoers", 'r') as f:
+            lines = f.read()
+            if "dean ALL=(ALL) " in lines:
+                printOKGreen("User Added Successfully")
+            else:
+                printFail("Failed to add user. Exiting script...")
+                exit
+
+
+def installSoftware():
+
+    installString = "apt install"
+    with open('installList.txt', 'r') as f:
+        softlines = f.readlines()
+        for x in softlines:
+            if '#' not in x:
+                installString += f" {x[:-1]}"
+    installString += f" -y" 
+    os.system(installString)
+
+
+def DraytekCLI(octet):
+    macAddr = ""
+    trimmedHostname = socket.gethostname()[0:12]
+    os.system('cat /sys/class/net/en*/address >> mac.txt')
+    with open("mac.txt", 'r') as f:
+        macAddr = f.readline()
+    os.remove('mac.txt')
+    draytekCLIString = f"ip bindmac add 10.0.0.{octet} {macAddr[:-1]} {trimmedHostname}"
+
+    HOST = "10.0.0.1"
+    user = "admin"
+    password = getpass.getpass("Please enter router password: ")
+
+    tn = telnetlib.Telnet(HOST)
+
+    tn.read_until(b"Account:")
+    tn.write(user.encode('ascii') + b"\n")
+    if password:
+        tn.read_until(b"Password: ")
+        tn.write(password.encode('ascii') + b"\n")
+
+    tn.write(bytes(draytekCLIString, encoding='ascii') + b"\n")
+    tn.write(b"exit\n")
+
+    tn.close
+
+    print(tn.read_all().decode('ascii'))
 
 # Main code base
 
 if __name__ == "__main__":
-    os.system('cls')
+    os.system('clear')
     printHeader("Server Setup Script v2 - Python Edition")
     if not checkRoot():
         printFail("User is not root - Exiting Script")
         exit()
     print()
+    SetSUDONoPassword()
+    print()
+    print("Runnin apt update")
+    os.system('sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo apt autoclean')
     if javaCheck():
         installJava()
     print()
-    installOpenSSH()
+    printHeader("Installing software")
+    installSoftware()
     print()
-    SetSUDONoPassword()
-    SetSUDONoPassword()
+    printHeader("Setting up IP to mac-address bind")
+    varIP = input("Please the 4th octet (10.0.0.***) you and for the IP of this server: ")
+    print()
+    DraytekCLI(varIP) 
