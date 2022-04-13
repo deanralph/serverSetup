@@ -3,3 +3,4 @@ openssh-server
 htop
 nano
 snmpd
+openssl
