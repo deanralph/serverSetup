@@ -113,9 +113,9 @@ if __name__ == "__main__":
     SetSUDONoPassword()
     print()
     print("Runnin apt update")
-    os.system('sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo apt autoclean')
-    if javaCheck():
-        installJava()
+    os.system('sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo apt autoclean -y')
+    #if javaCheck():
+    installJava()
     print()
     printHeader("Installing software")
     installSoftware()
