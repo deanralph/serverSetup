@@ -24,7 +24,8 @@ subjectAltName = @alt_names
 
 [alt_names]
 IP.1 = {varIP}
-DNS.1 = {varFQDN}"""
+DNS.1 = {varFQDN}
+DNS.2 = {varIP}"""
 
 with open('san.cnf', 'w') as f:
     f.write(varConfigText)
