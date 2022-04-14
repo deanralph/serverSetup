@@ -21,7 +21,7 @@ def checkRoot():
 
 def installJava():
     installJDK = input("Do you need java on this box? y/n: ")
-    if installJava == "y":
+    if installJDK == "y":
         os.system('apt install default-jdk -y')
 
 
