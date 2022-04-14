@@ -99,9 +99,9 @@ def addPatching(servername, ipaddress):
     cursor = conn.cursor(as_dict=True)
 
     cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '10.0.0.{ipaddress}', 'dean', 0, 0")
-    cursor.commit()
+    conn.commit()
     
-    validate = cursor.execute(f"select * from [dbo].[addserver] where servername = '{servername}'")
+    validate = cursor.execute(f"select * from [dbo].[servers] where servername = '{servername}'")
 
     if validate[servername] == servername:
         printOKGreen("Successfully added to patching db")
@@ -133,4 +133,4 @@ if __name__ == "__main__":
     DraytekCLI(varIP) 
     varPatching = input("do you want to add server to patching? y/n: ")
     if varPatching == 'y':
-        addPatching(str(socket.gethostname()), varIP)
+        addPatching(srt(socket.gethostname()), varIP)

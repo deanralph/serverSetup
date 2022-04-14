@@ -13,5 +13,3 @@ sudo python3 main.py
 cd ../
 
 sudo rm -r setup
-
-clear
