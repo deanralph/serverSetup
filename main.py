@@ -19,16 +19,6 @@ def checkRoot():
     return os.geteuid() == 0
 
 
-def javaCheck():
-    version = subprocess.check_output(['java', '-version'], stderr=subprocess.STDOUT)
-    if "Runtime" in str(version):
-        printOKGreen("Java already installed")
-        return False
-    else:
-        printWarning("No Java install detected")
-        return True
-
-
 def installJava():
     installJDK = input("Do you need java on this box? y/n: ")
     if installJava == "y":
@@ -114,7 +104,6 @@ if __name__ == "__main__":
     print()
     print("Runnin apt update")
     os.system('sudo apt update && sudo apt upgrade -y && sudo apt autoremove && sudo apt autoclean -y')
-    #if javaCheck():
     installJava()
     print()
     printHeader("Installing software")
