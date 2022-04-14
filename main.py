@@ -22,7 +22,7 @@ def checkRoot():
 def installJava():
     installJDK = input("Do you need java on this box? y/n: ")
     if installJava == "y":
-        os.system('sudo apt install default-jdk')
+        os.system('apt install default-jdk -y')
 
 
 def SetSUDONoPassword():
