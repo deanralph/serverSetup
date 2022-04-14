@@ -98,8 +98,15 @@ def addPatching(servername, ipaddress):
     conn = pymssql.connect("10.0.0.53", "patching", "Patching123", "patching")
     cursor = conn.cursor(as_dict=True)
 
-    cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '{ipaddress}', 'dean', 0, 0")
-    conn.close()
+    cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '10.0.0.{ipaddress}', 'dean', 0, 0")
+    cursor.commit()
+    
+    validate = cursor.execute(f"select * from [dbo].[addserver] where servername = '{servername}'")
+
+    if validate[servername] == servername:
+        printOKGreen("Successfully added to patching db")
+    else:
+        printFail("Failed to add to patching db")
 
 
 # Main code base
@@ -124,6 +131,6 @@ if __name__ == "__main__":
     varIP = input("Please the 4th octet (10.0.0.***) you and for the IP of this server: ")
     print()
     DraytekCLI(varIP) 
-    varPathing = input("do you want to add server to patching? y/n: ")
-    if varPathing == 'y':
-        addPatching(socket.gethostname(), varIP)
+    varPatching = input("do you want to add server to patching? y/n: ")
+    if varPatching == 'y':
+        addPatching(str(socket.gethostname()), varIP)
