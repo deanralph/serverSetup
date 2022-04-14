@@ -133,4 +133,4 @@ if __name__ == "__main__":
     DraytekCLI(varIP) 
     varPatching = input("do you want to add server to patching? y/n: ")
     if varPatching == 'y':
-        addPatching(srt(socket.gethostname()), varIP)
+        addPatching(str(socket.gethostname()), varIP)
