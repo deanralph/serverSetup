@@ -101,9 +101,10 @@ def addPatching(servername, ipaddress):
     cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '10.0.0.{ipaddress}', 'dean', 0, 0")
     conn.commit()
     
-    validate = cursor.execute(f"select * from [dbo].[servers] where servername = '{servername}'")
+    cursor.execute(f"select * from [dbo].[servers] where servername = '{servername}'")
+    validate = cursor.fetchone()
 
-    if validate[servername] == servername:
+    if validate['servername'] == servername:
         printOKGreen("Successfully added to patching db")
     else:
         printFail("Failed to add to patching db")
