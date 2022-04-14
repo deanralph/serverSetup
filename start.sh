@@ -10,4 +10,6 @@ wget https://raw.githubusercontent.com/deanralph/serverSetup/main/installList.tx
 
 sudo python3 main.py
 
-sudo rm -r *
+cd ../
+
+sudo rm -r setup
