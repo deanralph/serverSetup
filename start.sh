@@ -1,7 +1,7 @@
 #!/bin/bash
 # Server Setup Script
 
-mkdir Setup
+mkdir setup
 cd setup
 
 wget https://raw.githubusercontent.com/deanralph/serverSetup/main/main.py
@@ -10,4 +10,4 @@ wget https://raw.githubusercontent.com/deanralph/serverSetup/main/installList.tx
 
 sudo python3 main.py
 
-sudo rm *
+sudo rm -r *
