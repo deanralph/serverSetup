@@ -91,6 +91,17 @@ def DraytekCLI(octet):
 
     print(tn.read_all().decode('ascii'))
 
+
+def addPatching(servername, ipaddress):
+    os.system("pip3 install pymssql")
+    import pymssql
+    conn = pymssql.connect("10.0.0.53", "patching", "Patching123", "patching")
+    cursor = conn.cursor(as_dict=True)
+
+    cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '{ipaddress}', 'dean', 0, 0")
+    conn.close()
+
+
 # Main code base
 
 if __name__ == "__main__":
@@ -113,3 +124,6 @@ if __name__ == "__main__":
     varIP = input("Please the 4th octet (10.0.0.***) you and for the IP of this server: ")
     print()
     DraytekCLI(varIP) 
+    varPathing = input("do you want to add server to patching? y/n: ")
+    if varPathing == 'y':
+        addPatching(socket.gethostname(), varIP)

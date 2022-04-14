@@ -4,3 +4,4 @@ htop
 nano
 snmpd
 openssl
+python3-pip
