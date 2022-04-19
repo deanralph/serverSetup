@@ -95,7 +95,7 @@ def DraytekCLI(octet):
 def addPatching(servername, ipaddress):
     os.system("pip3 install pymssql")
     import pymssql
-    conn = pymssql.connect("10.0.0.53", "patching", "Patching123", "patching")
+    conn = pymssql.connect("10.0.0.103", "patching", "Patching123", "patching")
     cursor = conn.cursor(as_dict=True)
 
     cursor.execute(f"EXECUTE [dbo].[addserver] '{servername}', '10.0.0.{ipaddress}', 'dean', 0, 0")
