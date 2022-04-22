@@ -5,3 +5,4 @@ nano
 snmpd
 openssl
 python3-pip
+zabbix-agent
