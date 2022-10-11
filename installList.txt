@@ -3,4 +3,4 @@ openssh-server
 htop
 nano
 openssl
-python3-pip
+#python3-pip
